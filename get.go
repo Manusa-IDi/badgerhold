@@ -12,7 +12,7 @@ import (
 )
 
 // ErrNotFound is returned when no data is found for the given key
-var ErrNotFound = errors.New("No data found for this key")
+var ErrNotFound = errors.New("no data found for this key")
 
 // Get retrieves a value from badgerhold and puts it into result.  Result must be a pointer
 func (s *Store) Get(key, result interface{}) error {

@@ -14,7 +14,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/timshannon/badgerhold/v4"
+	"github.com/Manusa-IDi/badgerhold"
 )
 
 func TestOpen(t *testing.T) {

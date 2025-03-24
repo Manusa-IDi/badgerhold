@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/timshannon/badgerhold/v4"
+	"github.com/Manusa-IDi/badgerhold"
 )
 
 func TestForEach(t *testing.T) {

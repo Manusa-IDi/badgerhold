@@ -4,9 +4,7 @@
 
 package badgerhold
 
-import (
-	"github.com/dgraph-io/badger/v4"
-)
+import "github.com/dgraph-io/badger/v4"
 
 // Delete deletes a record from the badgerhold, datatype just needs to be an example of the type stored so that
 // the proper bucket and indexes are updated
