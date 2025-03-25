@@ -7,13 +7,12 @@ package badgerhold_test
 import (
 	"encoding/binary"
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"strconv"
 	"testing"
 
-	"github.com/dgraph-io/badger/v4"
 	"github.com/Manusa-IDi/badgerhold"
+	"github.com/dgraph-io/badger/v4"
 )
 
 type BenchData struct {
@@ -39,9 +38,9 @@ var benchItemIndexed = BenchDataIndexed{
 // benchWrap creates a temporary database for testing and closes and cleans it up when
 // completed.
 func benchWrap(b *testing.B, options *badgerhold.Options, bench func(store *badgerhold.Store, b *testing.B)) {
-	tempDir, err := ioutil.TempDir("", "badgerhold_tests")
+	tempDir, err := os.MkdirTemp("", "badgerhold_tests")
 	if err != nil {
-		b.Fatalf("Error opening %s: %s", tempDir, err)
+		b.Fatalf("Error creating temp directory %s: %s", tempDir, err)
 	}
 	defer os.RemoveAll(tempDir)
 

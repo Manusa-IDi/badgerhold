@@ -21,7 +21,7 @@ func (e *ErrTypeMismatch) Error() string {
 	return fmt.Sprintf("%v (%T) cannot be compared with %v (%T)", e.Value, e.Value, e.Other, e.Other)
 }
 
-//Comparer compares a type against the encoded value in the store. The result should be 0 if current==other,
+// Comparer compares a type against the encoded value in the store. The result should be 0 if current==other,
 // -1 if current < other, and +1 if current > other.
 // If a field in a struct doesn't specify a comparer, then the default comparison is used (convert to string and compare)
 // this interface is already handled for standard Go Types as well as more complex ones such as those in time and big
@@ -42,7 +42,7 @@ func (c *Criterion) compare(rowValue, criterionValue interface{}, currentRow int
 	if _, ok := criterionValue.(Field); ok {
 		fVal := reflect.ValueOf(currentRow).Elem().FieldByName(string(criterionValue.(Field)))
 		if !fVal.IsValid() {
-			return 0, fmt.Errorf("The field %s does not exist in the type %s", criterionValue,
+			return 0, fmt.Errorf("the field %s does not exist in the type %s", criterionValue,
 				reflect.TypeOf(currentRow))
 		}
 

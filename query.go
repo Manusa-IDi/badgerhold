@@ -66,7 +66,7 @@ type Query struct {
 func Slice(value interface{}) []interface{} {
 	slc := reflect.ValueOf(value)
 
-	s := make([]interface{}, slc.Len(), slc.Len()) // panics if value is not slice, array or map
+	s := make([]interface{}, slc.Len()) // panics if value is not slice, array or map
 	for i := range s {
 		s[i] = slc.Index(i).Interface()
 	}
@@ -261,7 +261,7 @@ func (q *Query) validateIndex(data interface{}) error {
 		if _, ok = storer.Indexes()[q.index]; ok {
 			return nil
 		} else {
-			return fmt.Errorf("The index %s does not exist", q.index)
+			return fmt.Errorf("the index %s does not exist", q.index)
 		}
 	}
 
@@ -277,7 +277,7 @@ func (q *Query) validateIndex(data interface{}) error {
 	}
 	// no field name or custom index name found
 
-	return fmt.Errorf("The index %s does not exist", q.index)
+	return fmt.Errorf("the index %s does not exist", q.index)
 }
 
 // Or creates another separate query that gets unioned with any other results in the query
@@ -375,7 +375,7 @@ func fieldValue(value reflect.Value, field string) (reflect.Value, error) {
 			current = current.FieldByName(fields[i])
 		}
 		if !current.IsValid() {
-			return reflect.Value{}, fmt.Errorf("The field %s does not exist in the type %s", field, value)
+			return reflect.Value{}, fmt.Errorf("the field %s does not exist in the type %s", field, value)
 		}
 	}
 	return current, nil
@@ -768,7 +768,7 @@ func (s *Store) runQuery(tx *badger.Txn, dataType interface{}, query *Query, ret
 	}()
 
 	if query.index != "" && query.badIndex {
-		return fmt.Errorf("The index %s does not exist", query.index)
+		return fmt.Errorf("the index %s does not exist", query.index)
 	}
 
 	newKeys := make(KeyList, 0)
@@ -963,7 +963,7 @@ func validateSortFields(query *Query) error {
 			}
 
 			if !found {
-				return fmt.Errorf("The field %s does not exist in the type %s", field, query.dataType)
+				return fmt.Errorf("the field %s does not exist in the type %s", field, query.dataType)
 			}
 			current = structField.Type
 		}
@@ -1161,7 +1161,7 @@ func (s *Store) aggregateQuery(tx *badger.Txn, dataType interface{}, query *Quer
 			for i := range groupBy {
 				fVal := r.value.Elem().FieldByName(groupBy[i])
 				if !fVal.IsValid() {
-					return fmt.Errorf("The field %s does not exist in the type %s", groupBy[i],
+					return fmt.Errorf("the field %s does not exist in the type %s", groupBy[i],
 						r.value.Type())
 				}
 

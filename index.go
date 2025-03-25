@@ -164,11 +164,7 @@ func indexExists(it *badger.Iterator, typeName, indexName string) bool {
 
 	// test if an index exists
 	it.Seek(iPrefix)
-	if it.ValidForPrefix(iPrefix) {
-		return true
-	}
-
-	return false
+	return it.ValidForPrefix(iPrefix)
 }
 
 type iterator struct {

@@ -81,10 +81,7 @@ func (s *Store) Close() error {
 	var err error
 	s.sequences.Range(func(key, value interface{}) bool {
 		err = value.(*badger.Sequence).Release()
-		if err != nil {
-			return false
-		}
-		return true
+		return err == nil
 	})
 	if err != nil {
 		return err

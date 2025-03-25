@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dgraph-io/badger/v4"
 	"github.com/Manusa-IDi/badgerhold"
+	"github.com/dgraph-io/badger/v4"
 )
 
 func TestGet(t *testing.T) {

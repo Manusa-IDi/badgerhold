@@ -10,8 +10,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/dgraph-io/badger/v4"
 	"github.com/Manusa-IDi/badgerhold"
+	"github.com/dgraph-io/badger/v4"
 )
 
 type Item struct {
@@ -51,12 +51,11 @@ func Example() {
 	options.Dir = dir
 	options.ValueDir = dir
 	store, err := badgerhold.Open(options)
-	defer store.Close()
-
 	if err != nil {
 		// handle error
 		log.Fatal(err)
 	}
+	defer store.Close()
 
 	// insert the data in one transaction
 
