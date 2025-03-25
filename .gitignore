@@ -13,3 +13,7 @@
 
 # vim swap
 *.swp
+
+# VSCode
+.vscode
+*.code-workspace
