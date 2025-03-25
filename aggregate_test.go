@@ -7,7 +7,7 @@ package badgerhold_test
 import (
 	"testing"
 
-	"github.com/Manusa-IDi/badgerhold"
+	"github.com/Manusa-IDi/badgerhold/v4"
 )
 
 func TestFindAggregateGroup(t *testing.T) {

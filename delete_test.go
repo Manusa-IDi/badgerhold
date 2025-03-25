@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Manusa-IDi/badgerhold/v4"
 	"github.com/dgraph-io/badger/v4"
-	"github.com/Manusa-IDi/badgerhold"
 )
 
 func TestDelete(t *testing.T) {

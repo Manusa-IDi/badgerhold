@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Manusa-IDi/badgerhold"
+	"github.com/Manusa-IDi/badgerhold/v4"
 	"github.com/dgraph-io/badger/v4"
 )
 

@@ -1,4 +1,4 @@
-module github.com/Manusa-IDi/badgerhold
+module github.com/Manusa-IDi/badgerhold/v4
 
 go 1.24
 

@@ -13,7 +13,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/Manusa-IDi/badgerhold"
+	"github.com/Manusa-IDi/badgerhold/v4"
 )
 
 func TestOpen(t *testing.T) {
