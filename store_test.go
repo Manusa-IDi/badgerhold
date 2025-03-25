@@ -7,7 +7,6 @@ package badgerhold_test
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -220,7 +219,7 @@ func testOptions() badgerhold.Options {
 
 // tempdir returns a temporary dir path.
 func tempdir() string {
-	name, err := ioutil.TempDir("", "badgerhold-")
+	name, err := os.MkdirTemp("", "badgerhold-")
 	if err != nil {
 		panic(err)
 	}

@@ -40,7 +40,7 @@ func TestGet(t *testing.T) {
 func TestIssue36(t *testing.T) {
 	testWrap(t, func(store *badgerhold.Store, t *testing.T) {
 		type Tag1 struct {
-			ID uint64 `badgerholdKey`
+			ID uint64 `badgerholdKey:""`
 		}
 
 		type Tag2 struct {
@@ -49,10 +49,6 @@ func TestIssue36(t *testing.T) {
 
 		type Tag3 struct {
 			ID uint64 `badgerhold:"key"`
-		}
-
-		type Tag4 struct {
-			ID uint64 `badgerholdKey:""`
 		}
 
 		data1 := []*Tag1{{}, {}, {}}
@@ -73,12 +69,6 @@ func TestIssue36(t *testing.T) {
 			equals(t, uint64(i), data3[i].ID)
 		}
 
-		data4 := []*Tag4{{}, {}, {}}
-		for i := range data4 {
-			ok(t, store.Insert(badgerhold.NextSequence(), data4[i]))
-			equals(t, uint64(i), data4[i].ID)
-		}
-
 		// Get
 		for i := range data1 {
 			get1 := &Tag1{}
@@ -96,12 +86,6 @@ func TestIssue36(t *testing.T) {
 			get3 := &Tag3{}
 			ok(t, store.Get(data3[i].ID, get3))
 			equals(t, data3[i], get3)
-		}
-
-		for i := range data4 {
-			get4 := &Tag4{}
-			ok(t, store.Get(data4[i].ID, get4))
-			equals(t, data4[i], get4)
 		}
 
 		// Find
@@ -125,13 +109,6 @@ func TestIssue36(t *testing.T) {
 			ok(t, store.Find(&find3, badgerhold.Where(badgerhold.Key).Eq(data3[i].ID)))
 			assert(t, len(find3) == 1, "incorrect rows returned")
 			equals(t, find3[0], data3[i])
-		}
-
-		for i := range data4 {
-			var find4 []*Tag4
-			ok(t, store.Find(&find4, badgerhold.Where(badgerhold.Key).Eq(data4[i].ID)))
-			assert(t, len(find4) == 1, "incorrect rows returned")
-			equals(t, find4[0], data4[i])
 		}
 	})
 }

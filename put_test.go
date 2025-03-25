@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dgraph-io/badger/v4"
 	"github.com/Manusa-IDi/badgerhold"
+	"github.com/dgraph-io/badger/v4"
 )
 
 func TestInsert(t *testing.T) {
@@ -663,36 +663,48 @@ func TestUniqueConstraint(t *testing.T) {
 func TestIssue46ConcurrentIndexInserts(t *testing.T) {
 	testWrap(t, func(store *badgerhold.Store, t *testing.T) {
 		var wg sync.WaitGroup
+		errCh := make(chan error, len(testData))
 
 		for i := range testData {
 			wg.Add(1)
-			go func(gt *testing.T, i int) {
+			go func(i int) {
 				defer wg.Done()
 				err := store.Insert(testData[i].Key, testData[i])
 				if err != nil {
-					gt.Fatalf("Error inserting test data for find test: %s", err)
+					errCh <- fmt.Errorf("error inserting test data at index %d: %w", i, err)
 				}
-			}(t, i)
+			}(i)
 		}
 		wg.Wait()
+		close(errCh)
+
+		for err := range errCh {
+			t.Fatal(err)
+		}
 	})
 }
 
 func TestIssue46ConcurrentIndexUpserts(t *testing.T) {
 	testWrap(t, func(store *badgerhold.Store, t *testing.T) {
 		var wg sync.WaitGroup
+		errCh := make(chan error, len(testData))
 
 		for i := range testData {
 			wg.Add(1)
-			go func(gt *testing.T, i int) {
+			go func(i int) {
 				defer wg.Done()
 				err := store.Upsert(testData[i].Key, testData[i])
 				if err != nil {
-					gt.Fatalf("Error inserting test data for find test: %s", err)
+					errCh <- fmt.Errorf("error upserting test data at index %d: %w", i, err)
 				}
-			}(t, i)
+			}(i)
 		}
 		wg.Wait()
+		close(errCh)
+
+		for err := range errCh {
+			t.Fatal(err)
+		}
 	})
 }
 
@@ -700,18 +712,24 @@ func TestIssue46ConcurrentIndexUpdate(t *testing.T) {
 	testWrap(t, func(store *badgerhold.Store, t *testing.T) {
 		insertTestData(t, store)
 		var wg sync.WaitGroup
+		errCh := make(chan error, len(testData))
 
 		for i := range testData {
 			wg.Add(1)
-			go func(gt *testing.T, i int) {
+			go func(i int) {
 				defer wg.Done()
 				err := store.Update(testData[i].Key, testData[i])
 				if err != nil {
-					gt.Fatalf("Error inserting test data for find test: %s", err)
+					errCh <- fmt.Errorf("error updating test data at index %d: %w", i, err)
 				}
-			}(t, i)
+			}(i)
 		}
 		wg.Wait()
+		close(errCh)
+
+		for err := range errCh {
+			t.Fatal(err)
+		}
 	})
 }
 
@@ -719,28 +737,33 @@ func TestIssue46ConcurrentIndexUpdateMatching(t *testing.T) {
 	testWrap(t, func(store *badgerhold.Store, t *testing.T) {
 		insertTestData(t, store)
 		var wg sync.WaitGroup
+		errCh := make(chan error, len(testData))
 
 		for i := range testData {
 			wg.Add(1)
-			go func(gt *testing.T, i int) {
+			go func(i int) {
 				defer wg.Done()
 				err := store.UpdateMatching(ItemTest{}, badgerhold.Where(badgerhold.Key).
 					Eq(testData[i].Key), func(r interface{}) error {
 					record, ok := r.(*ItemTest)
 					if !ok {
-						return fmt.Errorf("Record isn't the correct type!  Got %T",
+						return fmt.Errorf("Record isn't the correct type! Got %T",
 							r)
 					}
-					record.Name = record.Name
-
+					record.Name = fmt.Sprintf("%s (updated)", record.Name)
 					return nil
 				})
 				if err != nil {
-					gt.Fatalf("Error updating test data for test: %s", err)
+					errCh <- fmt.Errorf("error updating test data for test at index %d: %w", i, err)
 				}
-			}(t, i)
+			}(i)
 		}
 		wg.Wait()
+		close(errCh)
+
+		for err := range errCh {
+			t.Fatal(err)
+		}
 	})
 }
 
